@@ -1,7 +1,5 @@
 #!/bin/bash
 
-chmod +x course_stat.sh
-
 #check valid num of args
 
 if [ 1 != $# ]
