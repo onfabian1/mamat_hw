@@ -29,8 +29,7 @@ mkdir $1_stat
 #writing to grades.txt
 
 cat $1.txt | tail -n +2 | awk '{print $2}' > $1_stat/grades.txt
-cd $1_stat
-cat grades.txt
-
+gcc -g -Wall calc_statistics.c -o prog.exe
+./prog.exe $(cat $1_stat/grades.txt)
 
 
