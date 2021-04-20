@@ -74,6 +74,10 @@ int main(int argc, char **argv) {
     char buf_2[0x100];
 	snprintf(buf_1, sizeof(buf_1), "%s", address_1);
 	fd = fopen(buf_1, "r");
+	if (!fd){
+		fprintf(stderr, "file not good");
+		return 0;
+		}
 	snprintf(buf_2, sizeof(buf_2), "%s", address_2);
 	fd_out = fopen(buf_2, "w+");
     char c, l;
