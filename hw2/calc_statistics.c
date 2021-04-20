@@ -7,12 +7,9 @@ int num_lines_in_file(FILE *fd, char l) {  //count how many grades
 	int j = 0;
   	for(; (!feof(fd));){
   		l = fgetc(fd);
-  		printf("%c", l);
   		if(l == '\n')
   		{
-  			printf("%c\n", l);
    			 j++;
-   			 printf("%d\n", j);
   		}
 	}
 	return j;
@@ -24,8 +21,6 @@ int checking_grades(FILE *fd, int *pass,
   	for (int sum_1 = 0, i = 0;c != EOF;) {
   	    c = fgetc(fd);        
         if (c == '\n') {
-       	 	printf("%c\n",c);
-       	 	printf("%d\n",sum_1);
         	if (sum_1 > 54){
         			pass_1 += 1;
         	}
@@ -39,7 +34,6 @@ int checking_grades(FILE *fd, int *pass,
         	}
          else {
         	sum_1 = ((sum_1*10) + (int)(c - '0'));
-        	printf("%c",c);
         	}
         }
         *pass = pass_1;
@@ -113,5 +107,6 @@ int main(int argc, char **argv) {
 	}
 	free(grades);
 	fclose(fd);
+	fclose(fd_out);
 	return 0;
 }
