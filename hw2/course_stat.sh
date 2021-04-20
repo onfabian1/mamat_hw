@@ -30,6 +30,5 @@ mkdir $1_stat
 
 cat $1.txt | tail -n +2 | awk '{print $2}' > $1_stat/grades.txt
 gcc -g -Wall calc_statistics.c -o prog.exe
-./prog.exe $(cat $1_stat/grades.txt) > $1_stat/calc_statistics.txt
-
+./prog.exe ./$1_stat
 
