@@ -9,7 +9,7 @@ RM = rm -fr $(OBJS) prog *.exe
 $(EXEC): $(OBJS)
 	$(CCLINK) $(OBJS) -o $(EXEC)
 
-main.o: main.c
+main.o: main.c file0.h file1.h file2.h file3.h file4.h
 			$(CC) $(CFLAGS) -c main.c
 	
 file0.o: file0.c file0.h file1.h file2.h
