@@ -2,7 +2,7 @@ CC     = gcc
 CFLAGS = -Wall -g -std=c99
 CCLINK = $(CC)
 OBJS   = main.o file0.o file1.o file2.o file3.o file4.o 
-EXEC =  prog.exe
+EXEC =  prog
 RM = rm -fr *.exe $(OBJS)
 
 
