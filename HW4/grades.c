@@ -27,6 +27,7 @@ int cloneStudent(void* student, void **out){
 void destroyStudent(void * student){
     free((student_t)student->name);
     free(student);
+    //TODO free courses by list funcs
 }
 
 
