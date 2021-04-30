@@ -1,3 +1,10 @@
+#include <stdlib.h>
+#include "grades.h"
+#include "linked-list.h"
+#include <string.h>
+
+
+
 typedef struct grades{
      struct list* students_list;
 } *grades_t;
@@ -40,7 +47,7 @@ int checkIfCourseExists(struct list* courses, char* name) {
 
 grades_t grades_init(){
     grades_t grades_sys = (grades_t)malloc(sizeof(struct grades));
-    grades_sys->students_list = list_init(&clone_student, &destroy_student);
+    grades_sys->students_list = list_init(&clone_student, &destroy_student); //needs ptr to func, this doesn't compile
     return grades_sys;
 }
 
@@ -111,7 +118,7 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 		}
 	}
 	if(result){
-		return 1;
+		return -1;
 	}
 	double avg=0;
 	struct iterator* it_course = list_begin(student->courses);
@@ -120,9 +127,9 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 		course = (p_course_t)list_get(it_course);
 		avg += course->grade;
 	}
-	*out = avg;
+	*out = student->name;
 	destroy_course(course);
-	return *out;
+	return avg;
 }
                     
 
@@ -135,7 +142,7 @@ int clone_student(void* student, void **out){
     clone->name = (char*)malloc(sizeof(char) * (nameSize + 1));
     strcpy(clone->name, original->name);
     p_course_t course;
-    //dosent understand this line below
+    //dosen't understand this line below
     ct(&clone->courses = list_iniclone_course, &destroy_course); // TODO add missing arguments
     struct iterator *it = list_begin(original->courses);
     for(; it != list_end(original->courses); it = list_next(it)) {
