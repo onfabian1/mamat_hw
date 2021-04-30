@@ -127,6 +127,7 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 		course = (p_course_t)list_get(it_course);
 		avg += course->grade;
 	}
+	//out = (char*)malloc(sizeof(char));
 	*out = student->name;
 	destroy_course(course);
 	return avg;
