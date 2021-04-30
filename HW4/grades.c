@@ -70,7 +70,7 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 	//checks if student.id exists
 	int result=0;
 	struct iterator* it = list_begin(grades->students_list);
-	p_student_t student;
+	p_student_t student = (p_student_t)malloc(sizeof(student_t));
 	for(;it!=list_end(grades->students_list);it=list_next(grades->students_list)){
 		student = (p_student_t)list_get(it);
 		if(student->id==id){
@@ -84,9 +84,9 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     //checks name exists in courses 
     struct iterator* it_course = list_begin(student->courses);
     p_course_t course;
-    for(;it_course!=list_end(it->courses);it_course=list_next(student->courses)){
+    for(;it_course!=list_end(student->courses);it_course=list_next(student->courses)){
     	course = (p_course_t)list_get(it_course);
-		if(strcpy(course->course_name, name)==0){
+		if(!strcpy(course->course_name, name)){
 			return 1; //Fail
 		}
 	}
@@ -94,8 +94,35 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
     new_course->grade = grade;
     list_push_back(student->courses, new_course);
-    destroy(new_course);
+    destroy_course(new_course);
+    destroy_student(student);
     return 0;
+}
+
+float grades_calc_avg(grades_t grades, int id, char **out){
+	struct iterator* it = list_begin(grades->students_list);
+	int result=0;
+	p_student_t student = (p_student_t)malloc(sizeof(student_t));
+	for(;it!=list_end(grades->students_list);it=list_next(grades->students_list)){
+		student = (p_student_t)list_get(it);
+		if(student->id == id){
+			result++;
+			break;
+		}
+	}
+	if(result){
+		return 1;
+	}
+	double avg=0;
+	struct iterator* it_course = list_begin(student->courses);
+	p_course_t course = (p_course_t)malloc(sizeof(course_t));
+	for(;it!=list_end(student->courses);it=list_next(student->courses)){
+		course = (p_course_t)list_get(it_course);
+		avg += course->grade;
+	}
+	*out = avg;
+	destroy_course(course);
+	return *out;
 }
                     
 
