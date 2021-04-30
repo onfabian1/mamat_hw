@@ -39,6 +39,10 @@ int grades_add_student(grades_t, const char *name, int id){
 }
 	
 int grades_add_grade(grades_t,const char *name, int id, int grade){
+	if(grade>100 || grade<0){ //checks grade
+		printf("Error");
+		return 1;
+	}
 	//checks if student.id exists
 	int result=0;
 	struct iterator* it = list_begin(grades_t->students_list);
@@ -50,9 +54,16 @@ int grades_add_grade(grades_t,const char *name, int id, int grade){
 	}
     if(!result){
     	printf("Error");
-    	return 1;
-    }               
-                   
+    	return 1; //end of check student.id exists
+    }    
+    //checks name exists in courses 
+    struct iterator* it_course = list_begin(it->courses);          
+    for(;it!=list_end(grades_t->students_list);it=list_next(grades_t->students_list){
+		if(id==it->id){
+			printf("Error");
+			return 1;
+		}
+	}              
                     
 
 int clone_student(void* student, void **out){
