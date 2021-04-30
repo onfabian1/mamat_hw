@@ -51,7 +51,7 @@ void grades_destroy(grades_t grades){
 
 int grades_add_student(grades_t grades, const char *name, int id){
 	if(grades == NULL || checkIfStudentExists(grades->students_list, id) == 1) {
-		printf("Error!");
+		return 1; // Fail
 	}
 	p_student_t new_student = (p_student_t)malloc(sizeof(student_t));
 	new_student->name = malloc(sizeof(char)*(strlen(name)+1));
@@ -65,8 +65,7 @@ int grades_add_student(grades_t grades, const char *name, int id){
 	
 int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 	if(grade>100 || grade<0){ //checks grade
-		printf("Error");
-		return 1;
+		return 1; //Fail
 	}
 	//checks if student.id exists
 	int result=0;
@@ -80,17 +79,15 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 		}
 	}
     if(!result){
-    	printf("Student does not exists");
-    	return 1; //end of check student.id exists
-    }    
+    	return 1; //Fail
+    }    //end of check student.id exists
     //checks name exists in courses 
     struct iterator* it_course = list_begin(student->courses);
     p_course_t course;
     for(;it_course!=list_end(it->courses);it_course=list_next(student->courses)){
     	course = (p_course_t)list_get(it_course);
 		if(strcpy(course->course_name, name)==0){
-			printf("Course already exists");
-			return 1;
+			return 1; //Fail
 		}
 	}
     p_course_t new_course = malloc(sizeof(new_course));
@@ -132,7 +129,7 @@ void destroy_student(void * student){
 
 int clone_course(void* course, void **out){
 	p_course_t clone = (p_course_t) malloc(sizeof(course_t));
-	//todo if malloc
+	//TODO if malloc
 	p_course_t original = (p_course_t)course;
 	clone->grade = original->grade;
 	strcpy(clone->course_name, original->course_name);
