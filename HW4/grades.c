@@ -1,3 +1,7 @@
+typedef struct grades{
+     struct list* students_list;
+} *grades_t
+
 typedef struct student{
     char* name;
     int id;
@@ -9,11 +13,20 @@ typedef struct course{
 	double grade;
 } *course_t
 
+grades_t grades_init(){
+    grades_t grades_sys = (grades_t)malloc(sizeof(struct grades));
+    grades_t->students_list = list_init(&clone_student, &destroy_student);
+}
 
-int cloneStudent(void* student, void **out){
+void grades_destroy(struct grades *grades){
+    list_destroy(grades_t->students_list);
+    free(grades_t);
+}
+
+int clone_student(void* student, void **out){
     student_t clone = (student_t) malloc(sizeof(struct student));
-    //TODO add malloc check
-    clone->id = (student_t)student->id;
+    //todo add malloc check
+    clone->id = (student_t)student->id; //maybe student_t->id;
     clone->name = strcpy((student_t)student->name);
     
     struct iterator it = list_begin(student->courses);
@@ -24,23 +37,17 @@ int cloneStudent(void* student, void **out){
     return 0;
 }
 
-void destroyStudent(void * student){
+void destroy_student(void * student){
     free((student_t)student->name);
     free(student);
-    //TODO free courses by list funcs
+    //todo free courses by linked-list.h funcs
 }
 
-
-
-typedef struct grades{
-     list students_list;
-} *grades_t
-
-grades_t grades_init(){
-    grades_t grades_sys = (grades_t)malloc(sizeof(struct grades));
-    grades_t->students_list = list_init(&cloneStudent, &destroyStudent);
-}
-void grades_destroy(struct grades *grades){
-    list_destroy(grade->studentList);
-    free(grade);
+int clone_course(void* course, void **out){
+	course_t clone = (course_t) malloc(sizeof(struct course));
+	//todo if malloc
+	clone->grade = (course_t)course->grade;
+	clone->name = strcpy((course_t)course->name);
+	*out=clone;
+	return 0;
 }
