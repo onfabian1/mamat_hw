@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "linked-list.h"
 #include <string.h>
-
+#include <stdio.h>
 
 
 typedef struct grades{
@@ -44,7 +44,7 @@ int clone_student(void* student, void **out){
     clone->name = (char*)malloc(sizeof(char) * (nameSize + 1));
     strcpy(clone->name, original->name);
     p_course_t course;
-    clone->courses = list_init(&clone_course, &destroy_course); // TODO add missing arguments
+    clone->courses = list_init(&clone_course, &destroy_course); 
     struct iterator *it = list_begin(original->courses);
     for(; it != NULL; it = list_next(it)) {
     	course = (p_course_t)list_get(it);
@@ -190,7 +190,7 @@ int grades_print_student(struct grades *grades, int id){
 		}
 	}
        //end of check student.id exists
-    
+
 	//check if there any of course
 	struct iterator* it_course = list_begin(student->courses);
 	printf("\n%s %d:",student->name, student->id);
@@ -210,17 +210,17 @@ int grades_print_all(struct grades *grades){
 	p_student_t student;
 	p_course_t course;
 	struct iterator *it_student=list_begin(grades->students_list);
-	for(;it_student!=NULL;it_student=list_next(grades->students_list)){
+	for(;it_student!=NULL;it_student=list_next(it_student)){
 		student = (p_student_t)list_get(it_student);
 		struct iterator *it_course = list_begin(student->courses);
 		printf("\n%s %d:",student->name, student->id);
 		for(; it_course != NULL; it_course = list_next(it_course)) {
-			course = (p_course_t)list_get(it_course); 
+			course = (p_course_t)list_get(it_course);
 			if(it_course==list_end(student->courses)){
 				printf(" %s %lf",course->course_name, course->grade);
 			}
-			else printf(" %s %lf,",course->course_name, course->grade);	
+			else printf(" %s %lf,",course->course_name, course->grade);
 		}
 	}
 	return 0;
-}	
+}
