@@ -50,7 +50,9 @@ int clone_student(void* student, void **out){
     struct iterator *it = list_begin(original->courses);
     for(; it != list_end(original->courses); it = list_next(it)) {
     	course = (p_course_t)list_get(it);
-    	list_push_back(clone->courses, course);
+    	if(list_push_back(clone->courses, course)){
+    	return 1; //Fail
+    	}
     }
     *out = (void *)clone;
     return 0;
@@ -67,7 +69,7 @@ void destroy_student(void * student){
 
 int checkIfStudentExists(struct list* students_list, int id) {
 	struct iterator* it = list_begin(students_list);
-	for(;it!=list_end(students_list);it=list_next(students_list)){
+	for(;it!=list_end(students_list);it=list_next(it)){
 		p_student_t student = (p_student_t)list_get(it);
 		if(student->id==id){
 			return 1;
@@ -108,7 +110,9 @@ int grades_add_student(grades_t grades, const char *name, int id){
 	strcpy(new_student->name,name);
 	new_student->id = id;
 	new_student->courses = list_init(&clone_course, &destroy_course);
-	list_push_back(grades->students_list, new_student);
+	if(list_push_back(grades->students_list, new_student)){
+	return 1;
+	}
 	destroy_student(new_student);
 	return 0;
 }
@@ -121,7 +125,7 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 	int result=0;
 	struct iterator* it = list_begin(grades->students_list);
 	p_student_t student = (p_student_t)malloc(sizeof(student_t));
-	for(;it!=list_end(grades->students_list);it=list_next(grades->students_list)){
+	for(;it!=list_end(grades->students_list);it=list_next(it)){
 		student = (p_student_t)list_get(it);
 		if(student->id==id){
 			result ++;
@@ -134,7 +138,7 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     //checks name exists in courses 
     struct iterator* it_course = list_begin(student->courses);
     p_course_t course;
-    for(;it_course!=list_end(student->courses);it_course=list_next(student->courses)){
+    for(;it_course!=list_end(student->courses);it_course=list_next(it_course)){
     	course = (p_course_t)list_get(it_course);
 		if(!strcpy(course->course_name, name)){
 			return 1; //Fail
@@ -152,7 +156,7 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 	struct iterator* it = list_begin(grades->students_list);
 	int result=0;
 	p_student_t student = (p_student_t)malloc(sizeof(student_t));
-	for(;it!=list_end(grades->students_list);it=list_next(grades->students_list)){
+	for(;it!=list_end(grades->students_list);it=list_next(it)){
 		student = (p_student_t)list_get(it);
 		if(student->id == id){
 			result++;
@@ -165,21 +169,21 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 	double avg=0;
 	struct iterator* it_course = list_begin(student->courses);
 	p_course_t course;
-	for(;it!=list_end(student->courses);it=list_next(student->courses)){
+	for(;it!=list_end(student->courses);it=list_next(it)){
 		course = (p_course_t)list_get(it_course);
 		avg += course->grade;
-	}
+	}//needs to free out?
 	*out = (char*)malloc(sizeof(char)*(strlen(course->course_name)+1));
 	strcpy(*out,student->name);
 	return avg;
 }
 int grades_print_student(struct grades *grades, int id){
-	if(grades == NULL || checkIfStudentExists(grades->students_list, id) == 1) {
+	if(grades == NULL || checkIfStudentExists(grades->students_list, id) == 0) {
 		return 1; // Fail
 	}
 	struct iterator* it = list_begin(grades->students_list);
 	p_student_t student;
-	for(;it!=list_end(grades->students_list);it=list_next(grades->students_list)){
+	for(;it!=list_end(grades->students_list);it=list_next(it)){
 		student = (p_student_t)list_get(it);
 		if(student->id==id){
 			break;
@@ -189,9 +193,11 @@ int grades_print_student(struct grades *grades, int id){
     
 	//check if there any of course
 	struct iterator* it_course = list_begin(student->courses);
+	printf("\n%s %d:",student->name, student->id);
 	  for(; it_course != list_end(student->courses); it_course = list_next(it_course)) {
-    	p_course_t course = list_get(it_course); 
-    	printf("%s %d: %s %lf\n", student->name, student->id, course->course_name, course->grade);
+    	p_course_t course = (p_course_t)list_get(it_course);
+    	if( //needs to do print without ',' at the last course
+    	printf(" %s %lf,",course->course_name, course->grade);
     }
 	return 0;
 }
@@ -203,11 +209,13 @@ int grades_print_all(struct grades *grades){
 	p_course_t course;
 	struct iterator *it_student=list_begin(grades->students_list);
 	for(;it_student!=list_end(grades->students_list);it_student=list_next(grades->students_list)){
-		student = list_get(it_student);
+		student = (p_student_t)list_get(it_student);
 		struct iterator *it_course = list_begin(student->courses);
+		printf("\n%s %d:",student->name, student->id);
 		for(; it_course != list_end(student->courses); it_course = list_next(it_course)) {
-			course = list_get(it_course); 
-			printf("%s %d: %s %lf\n", student->name, student->id, course->course_name, course->grade);	
+			course = (p_course_t)list_get(it_course); 
+			if( //needs to do print without ',' at the last course
+			printf(" %s %lf,",course->course_name, course->grade);	
 		}
 	}
 	return 0;
