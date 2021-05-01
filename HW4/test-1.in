@@ -1,0 +1,200 @@
+add-grade 1007 abaabacbbabb 47
+add-grade 1001 cbacbbcccbbc 46
+print-student 1006
+print-student 1001
+add-student acabc 1006
+add-grade 1004 cccbccababab 79
+print-student 1008
+add-student accab 1009
+add-student cbcbc 1003
+print-all
+print-all
+print-all
+add-grade 1004 bcaabcabbaaa 67
+add-grade 1006 bbacbccbccaa 15
+print-all
+print-all
+add-grade 1007 ccbbcccabacb 97
+add-student aabbc 1010
+print-all
+print-all
+calc-avg 1003
+add-student accbb 1004
+calc-avg 1000
+add-grade 1008 cbcccababbcb 15
+print-all
+print-all
+calc-avg 1010
+calc-avg 1003
+add-student aaccc 1008
+print-all
+print-all
+add-student cabba 1008
+add-student aaabc 1006
+add-grade 1001 cbabbbabccba 46
+add-student abcbc 1000
+print-student 1010
+add-grade 1010 acababaccbcc 10
+print-all
+calc-avg 1005
+print-all
+calc-avg 1009
+print-all
+print-all
+add-grade 1001 abbacccaccab 34
+add-student aaaca 1001
+add-grade 1009 cbababbababb 87
+print-all
+print-student 1003
+add-grade 1006 baacbcbcaaaa 49
+print-student 1008
+calc-avg 1009
+add-grade 1010 bbabcbccccbc 35
+calc-avg 1007
+calc-avg 1010
+add-grade 1005 cccaaabbaabb 36
+print-all
+print-student 1002
+print-all
+print-all
+add-grade 1007 bcbaaacacbab 5
+print-student 1007
+calc-avg 1000
+print-student 1007
+print-student 1002
+print-all
+add-student abcbc 1003
+add-grade 1010 cccccbaacbcb 73
+print-all
+add-grade 1002 cbccbabaacaa 79
+print-all
+add-student ccaca 1008
+add-grade 1006 abccaacccbac 3
+add-grade 1000 babababcabaa 81
+print-all
+print-all
+add-student ccacb 1006
+add-grade 1010 bbaaabbbabba 53
+print-all
+print-student 1008
+print-all
+add-student babaa 1002
+print-student 1006
+add-student bccab 1003
+add-student abbac 1007
+add-student abbac 1007
+add-grade 1008 baaccbbacaba 44
+add-grade 1009 abacabccabcb 35
+calc-avg 1000
+add-grade 1005 bcaabbbccbcb 74
+print-student 1009
+add-student bcabb 1003
+calc-avg 1007
+add-student caaac 1002
+print-all
+add-student aabcc 1009
+print-all
+add-grade 1006 bcbaccabbbca 63
+add-grade 1010 abbbaacaccac 11
+print-student 1007
+calc-avg 1002
+calc-avg 1006
+print-student 1010
+add-student bbaac 1000
+add-grade 1007 baccaaacbcab 26
+print-all
+print-student 1004
+print-all
+calc-avg 1002
+add-student baccb 1008
+print-student 1007
+add-grade 1006 baaccbbcbbac 15
+add-student bbaca 1008
+print-all
+calc-avg 1005
+calc-avg 1010
+print-all
+add-student cabcb 1006
+print-student 1001
+calc-avg 1003
+print-all
+print-all
+print-all
+add-grade 1003 babccacaccbb 52
+print-student 1004
+add-student ababa 1003
+add-grade 1001 babcbccabcbc 53
+add-grade 1007 cccacbbcbbca 56
+add-student acbaa 1010
+add-grade 1001 bcaabcbbaaaa 68
+print-student 1002
+print-all
+calc-avg 1009
+add-student cabbc 1004
+add-grade 1010 acacbbcbbaab 70
+add-grade 1004 acbbacbacbca 52
+add-grade 1008 aacbcccaabac 56
+print-student 1000
+print-all
+calc-avg 1003
+print-all
+print-student 1007
+print-student 1005
+print-all
+print-student 1001
+add-student baabc 1000
+calc-avg 1006
+add-grade 1003 bacccbbcbbca 90
+add-student aaaaa 1010
+print-student 1010
+add-grade 1000 cabcbacbabac 17
+add-student bbcaa 1010
+print-student 1009
+calc-avg 1005
+add-student bcbbb 1010
+print-student 1004
+add-student bbacb 1008
+add-grade 1010 cbbcabbacccc 82
+print-student 1003
+print-student 1010
+add-student ccaca 1010
+print-all
+add-grade 1006 acbbabbaacab 60
+print-student 1007
+add-grade 1006 bbccaacbcbcc 19
+print-all
+calc-avg 1010
+print-all
+add-student acbba 1000
+add-grade 1005 ccbcbccbcaab 92
+print-all
+add-student aabca 1002
+add-student baaba 1005
+print-student 1004
+calc-avg 1002
+print-student 1003
+calc-avg 1007
+add-student abaca 1010
+add-student bcaac 1001
+add-grade 1004 cacbbcbbaaca 98
+calc-avg 1005
+add-grade 1007 abaacbbcbaca 19
+print-student 1001
+add-student bcaab 1009
+add-grade 1003 bcccacabcbca 4
+add-student bbaab 1006
+print-all
+print-all
+print-student 1006
+print-student 1004
+add-grade 1008 cbbcacaacbab 50
+calc-avg 1004
+add-student cbbcc 1001
+calc-avg 1007
+add-student acbca 1008
+print-student 1009
+add-grade 1005 bcbcbccaccca 65
+add-student cbaac 1004
+print-student 1008
+print-all
+add-student cbbbb 1001
