@@ -193,7 +193,7 @@ int grades_print_student(struct grades *grades, int id){
 
 	//check if there any of course
 	struct iterator* it_course = list_begin(student->courses);
-	printf("\n%s %d:",student->name, student->id);
+	printf("%s %d:",student->name, student->id);
 	  for(; it_course != NULL; it_course = list_next(it_course)) {
     	p_course_t course = (p_course_t)list_get(it_course);
     	if(list_end(student->courses)==it_course){
