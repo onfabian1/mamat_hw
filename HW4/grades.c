@@ -21,10 +21,16 @@ typedef struct course{
 
 int clone_course(void* course, void **out){
 	p_course_t clone = (p_course_t) malloc(sizeof(course_t));
+	if(!clone){
+		return 1;
+	}
 	//TODO if malloc
 	p_course_t original = (p_course_t)course;
 	clone->grade = original->grade;
 	clone->course_name = (char*)malloc(sizeof(char)*(strlen(original->course_name)+1));
+	if(!clone->course_name){
+		return 1;
+	}
 	strcpy(clone->course_name, original->course_name);
 	*out=(void *)clone;
 	return 0;
@@ -38,11 +44,17 @@ void destroy_course(void *course){
 
 int clone_student(void* student, void **out){
     p_student_t clone = (p_student_t) malloc(sizeof(student_t));
+    if(!clone){
+		return 1;
+	}
     p_student_t original = (p_student_t)student;
     clone->id = original->id;
     int nameSize = strlen(original->name);
     //TODO add malloc check
     clone->name = (char*)malloc(sizeof(char) * (nameSize + 1));
+    if(!clone->name){
+		return 1;
+	}
     strcpy(clone->name, original->name);
     p_course_t course;
     clone->courses = list_init(&clone_course, &destroy_course); 
@@ -110,7 +122,13 @@ int grades_add_student(grades_t grades, const char *name, int id){
 	}
 	
 	p_student_t new_student = (p_student_t)malloc(sizeof(student_t));
+	if(!new_student){
+		return 1;
+	}
 	new_student->name = malloc(sizeof(char)*(strlen(name)+1));
+	if(!new_student->name){
+		return 1;
+	}
 	strcpy(new_student->name,name);
 	new_student->id = id;
 	new_student->courses = list_init(&clone_course, &destroy_course);
@@ -155,7 +173,13 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 	}
 
     p_course_t new_course = (p_course_t)malloc(sizeof(course_t));
+    if(!new_course){
+		return 1;
+	}
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
+    if(!new_course->course_name){
+		return 1;
+	}
     strcpy(new_course->course_name,name);
     new_course->grade = grade;
     
@@ -174,7 +198,7 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 	for(;it!=NULL;it=list_next(it)){
 		student = (p_student_t)list_get(it);
 		if(student->id == id){
-			result++;
+			result=1;
 			break;
 		}
 	}
@@ -182,22 +206,20 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 		return -1;
 	}
 	
-	double avg=0;
-	int size= 0;
+	double sum=0;
+	double size= 0;
 	struct iterator* it_course = list_begin(student->courses);
 	p_course_t course;
-	for(;it!=NULL;it=list_next(it)){
+	for(;it_course!=NULL;it_course=list_next(it_course)){
 		course = (p_course_t)list_get(it_course);
-		printf("%d\n",size);
-		printf("%s\n",student->name);
-		printf("%s\n",course->course_name);
-		avg += course->grade;
+		sum += course->grade;
 		size++;
-	}//needs to free out?
-	out = (char)malloc(sizeof(char)*(strlen(course->course_name)+1));
+	}
+	*out = (char*)malloc(sizeof(char)*(strlen(course->course_name)+1));
 	strcpy(*out,student->name);
-	return avg/size;
+	return sum/size;
 }
+
 
 int grades_print_student(struct grades *grades, int id){
 	if(grades == NULL || checkIfStudentExists(grades->students_list, id) == 0) {
@@ -219,9 +241,9 @@ int grades_print_student(struct grades *grades, int id){
 	  for(; it_course != NULL; it_course = list_next(it_course)) {
     	p_course_t course = (p_course_t)list_get(it_course);
     	if(list_end(student->courses)==it_course){
-    	printf(" %s %lf",course->course_name, course->grade);
+    	printf(" %s %f",course->course_name, course->grade);//prints better
     	}
-    	else printf(" %s %lf,",course->course_name, course->grade);
+    	else printf(" %s %f,",course->course_name, course->grade);
     }
 	return 0;
 }
@@ -239,10 +261,10 @@ int grades_print_all(struct grades *grades){
 		for(; it_course != NULL; it_course = list_next(it_course)) {
 			course = (p_course_t)list_get(it_course);
 			if(it_course==list_end(student->courses)){
-				printf(" %s %lf",course->course_name, course->grade);
+				printf(" %s %f",course->course_name, course->grade);//better print
 			}
 			else {
-			printf(" %s %lf,",course->course_name, course->grade);
+			printf(" %s %f,",course->course_name, course->grade);
 			}
 		}
 	}
