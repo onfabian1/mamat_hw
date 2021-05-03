@@ -24,6 +24,7 @@ int clone_course(void* course, void **out){
 	//TODO if malloc
 	p_course_t original = (p_course_t)course;
 	clone->grade = original->grade;
+	clone->course_name = (char*)malloc(sizeof(char)*(strlen(original->course_name)+1));
 	strcpy(clone->course_name, original->course_name);
 	*out=(void *)clone;
 	return 0;
@@ -222,7 +223,9 @@ int grades_print_all(struct grades *grades){
 			if(it_course==list_end(student->courses)){
 				printf(" %s %lf",course->course_name, course->grade);
 			}
-			else printf(" %s %lf,",course->course_name, course->grade);
+			else {
+			printf(" %s %lf,",course->course_name, course->grade);
+			}
 		}
 	}
 	return 0;
