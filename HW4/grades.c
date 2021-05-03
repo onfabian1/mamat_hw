@@ -44,13 +44,17 @@ int clone_student(void* student, void **out){
     //TODO add malloc check
     clone->name = (char*)malloc(sizeof(char) * (nameSize + 1));
     strcpy(clone->name, original->name);
-    p_course_t course;
+    void *out2 = NULL;
+    void **out1 = &out2;
+     p_course_t course;
+    void *course_void = NULL; 
     clone->courses = list_init(&clone_course, &destroy_course); 
     struct iterator *it = list_begin(original->courses);
     for(; it != NULL; it = list_next(it)) {
-    	course = (p_course_t)list_get(it);
-    	if(list_push_back(clone->courses, course)){
-    	return 1; //Fail
+    	course_void = (void *)list_get(it);
+    	clone_course(course_void, out1);
+    	if(list_push_back(clone->courses, out2)) {
+    		return 1; //Fail
     	}
     }
     *out = (void *)clone;
@@ -147,7 +151,8 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
     strcpy(new_course->course_name,name);
     new_course->grade = grade;
-    if(list_push_back(student->courses, new_course)){
+    void *void_new_course = (void *)new_course;
+    if(list_push_back(student->courses, void_new_course)){
     	return 1;// Fail
     }
     destroy_course(new_course);
