@@ -44,14 +44,10 @@ int clone_student(void* student, void **out){
     //TODO add malloc check
     clone->name = (char*)malloc(sizeof(char) * (nameSize + 1));
     strcpy(clone->name, original->name);
-    void *out2 = NULL;
-    void **out1 = &out2;
-     p_course_t course;
-    void *course_void = NULL; 
+    p_course_t course;
     clone->courses = list_init(&clone_course, &destroy_course); 
     struct iterator *it = list_begin(original->courses);
     for(; it != NULL; it = list_next(it)) {
-<<<<<<< HEAD
     	course = (p_course_t)list_get(it);
     	void ** cloneCouse = NULL;
     	if(clone_course(course ,cloneCouse)){
@@ -59,12 +55,6 @@ int clone_student(void* student, void **out){
     	}
     	if (list_push_back(clone->courses, *cloneCouse)) {
     	return 1; //Fail
-=======
-    	course_void = (void *)list_get(it);
-    	clone_course(course_void, out1);
-    	if(list_push_back(clone->courses, out2)) {
-    		return 1; //Fail
->>>>>>> 072c1c7bf9977144d8101fe1f27943bec641c617
     	}
     }
     *out = clone;
@@ -168,13 +158,8 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
     strcpy(new_course->course_name,name);
     new_course->grade = grade;
-<<<<<<< HEAD
     
     if(list_push_back(student->courses, new_course)){
-=======
-    void *void_new_course = (void *)new_course;
-    if(list_push_back(student->courses, void_new_course)){
->>>>>>> 072c1c7bf9977144d8101fe1f27943bec641c617
     	return 1;// Fail
     }
     destroy_course(new_course);
@@ -209,7 +194,7 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 		avg += course->grade;
 		size++;
 	}//needs to free out?
-	*out = (char*)malloc(sizeof(char)*(strlen(course->course_name)+1));
+	out = (char)malloc(sizeof(char)*(strlen(course->course_name)+1));
 	strcpy(*out,student->name);
 	return avg/size;
 }
