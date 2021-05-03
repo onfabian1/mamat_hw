@@ -49,11 +49,15 @@ int clone_student(void* student, void **out){
     struct iterator *it = list_begin(original->courses);
     for(; it != NULL; it = list_next(it)) {
     	course = (p_course_t)list_get(it);
-    	if(list_push_back(clone->courses, course)){
+    	void ** cloneCouse = NULL;
+    	if(clone_course(course ,cloneCouse)){
+    		return 1;
+    	}
+    	if (list_push_back(clone->courses, *cloneCouse)) {
     	return 1; //Fail
     	}
     }
-    *out = (void *)clone;
+    *out = clone;
     return 0;
 }
 
@@ -104,11 +108,13 @@ int grades_add_student(grades_t grades, const char *name, int id){
 	if(grades == NULL || checkIfStudentExists(grades->students_list, id) == 1) {
 		return 1; // Fail
 	}
+	
 	p_student_t new_student = (p_student_t)malloc(sizeof(student_t));
 	new_student->name = malloc(sizeof(char)*(strlen(name)+1));
 	strcpy(new_student->name,name);
 	new_student->id = id;
 	new_student->courses = list_init(&clone_course, &destroy_course);
+	
 	if(list_push_back(grades->students_list, new_student)){
 	return 1;
 	}
@@ -120,10 +126,12 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 	if(grade>100 || grade<0){ //checks grade
 		return 1; //Fail
 	}
+	
 	//checks if student.id exists
 	int result=0;
 	struct iterator* it = list_begin(grades->students_list);
-	p_student_t student = (p_student_t)malloc(sizeof(student_t));
+	p_student_t student;
+	
 	for(;it!=NULL;it=list_next(it)){
 		student = (p_student_t)list_get(it);
 		if(student->id==id){
@@ -135,6 +143,8 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     	return 1; //Fail
     }    //end of check student.id exists
     //checks name exists in courses 
+    
+    
     struct iterator* it_course = list_begin(student->courses);
     p_course_t course;
     for(;it_course!=NULL;it_course=list_next(it_course)){
@@ -143,22 +153,24 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 			return 1; //Fail
 		}
 	}
+
     p_course_t new_course = (p_course_t)malloc(sizeof(course_t));
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
     strcpy(new_course->course_name,name);
     new_course->grade = grade;
+    
     if(list_push_back(student->courses, new_course)){
     	return 1;// Fail
     }
     destroy_course(new_course);
-    destroy_student(student);
     return 0;
 }
 
 float grades_calc_avg(grades_t grades, int id, char **out){
+	
 	struct iterator* it = list_begin(grades->students_list);
 	int result=0;
-	p_student_t student = (p_student_t)malloc(sizeof(student_t));
+	p_student_t student;
 	for(;it!=NULL;it=list_next(it)){
 		student = (p_student_t)list_get(it);
 		if(student->id == id){
@@ -169,16 +181,22 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 	if(!result){
 		return -1;
 	}
+	
 	double avg=0;
+	int size= 0;
 	struct iterator* it_course = list_begin(student->courses);
 	p_course_t course;
 	for(;it!=NULL;it=list_next(it)){
 		course = (p_course_t)list_get(it_course);
+		printf("%d\n",size);
+		printf("%s\n",student->name);
+		printf("%s\n",course->course_name);
 		avg += course->grade;
+		size++;
 	}//needs to free out?
 	*out = (char*)malloc(sizeof(char)*(strlen(course->course_name)+1));
 	strcpy(*out,student->name);
-	return avg;
+	return avg/size;
 }
 
 int grades_print_student(struct grades *grades, int id){
