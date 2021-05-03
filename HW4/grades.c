@@ -138,12 +138,13 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
     p_course_t course;
     for(;it_course!=NULL;it_course=list_next(it_course)){
     	course = (p_course_t)list_get(it_course);
-		if(!strcpy(course->course_name, name)){
+		if(!strcmp(course->course_name, name)){
 			return 1; //Fail
 		}
 	}
-    p_course_t new_course = (p_course_t)malloc(sizeof(new_course));
+    p_course_t new_course = (p_course_t)malloc(sizeof(course_t));
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
+    strcpy(new_course->course_name,name);
     new_course->grade = grade;
     if(list_push_back(student->courses, new_course)){
     	return 1;// Fail
