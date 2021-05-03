@@ -142,10 +142,12 @@ int grades_add_grade(grades_t grades,const char *name, int id, int grade){
 			return 1; //Fail
 		}
 	}
-    p_course_t new_course = malloc(sizeof(new_course));
+    p_course_t new_course = (p_course_t)malloc(sizeof(new_course));
     new_course->course_name = (char*)malloc(sizeof(char)*(strlen(name)+1));
     new_course->grade = grade;
-    list_push_back(student->courses, new_course);
+    if(list_push_back(student->courses, new_course)){
+    	return 1;// Fail
+    }
     destroy_course(new_course);
     destroy_student(student);
     return 0;
