@@ -252,7 +252,7 @@ int grades_print_student(struct grades *grades, int id){
     	}
     	else printf(" %s %d,",course->course_name, course->grade);
     }
-    //printf("\n");
+    printf("\n");
 	return 0;
 }
 int grades_print_all(struct grades *grades){
@@ -265,7 +265,7 @@ int grades_print_all(struct grades *grades){
 	for(;it_student!=NULL;it_student=list_next(it_student)){
 		student = (p_student_t)list_get(it_student);
 		struct iterator *it_course = list_begin(student->courses);
-		printf("\n%s %d:",student->name, student->id);
+		printf("%s %d:",student->name, student->id);
 		for(; it_course != NULL; it_course = list_next(it_course)) {
 			course = (p_course_t)list_get(it_course);
 			if(it_course==list_end(student->courses)){
@@ -276,7 +276,7 @@ int grades_print_all(struct grades *grades){
 			}
 		}
 		
-		//printf("\n");
+		printf("\n");
 	}
 	return 0;
 }
