@@ -210,13 +210,20 @@ float grades_calc_avg(grades_t grades, int id, char **out){
 	double size= 0;
 	struct iterator* it_course = list_begin(student->courses);
 	p_course_t course;
+	course = (p_course_t)list_get(it_course);
+	if(course == NULL){
+		int avg = 0;
+		*out = (char*)malloc(sizeof(char)*(strlen(student->name)+1));
+		strcpy(*out,student->name);//Segmentation fault.
+		return avg;
+	}
 	for(;it_course!=NULL;it_course=list_next(it_course)){
 		course = (p_course_t)list_get(it_course);
 		sum += course->grade;
 		size++;
 	}
-	*out = (char*)malloc(sizeof(char)*(strlen(course->course_name)+1));
-	strcpy(*out,student->name);
+	*out = (char*)malloc(sizeof(char)*(strlen(student->name)+1));
+	strcpy(*out,student->name);//Segmentation fault.
 	return sum/size;
 }
 
@@ -241,9 +248,9 @@ int grades_print_student(struct grades *grades, int id){
 	  for(; it_course != NULL; it_course = list_next(it_course)) {
     	p_course_t course = (p_course_t)list_get(it_course);
     	if(list_end(student->courses)==it_course){
-    	printf(" %s %f",course->course_name, course->grade);//prints better
+    	printf(" %s %.2f",course->course_name, course->grade);//prints better
     	}
-    	else printf(" %s %f,",course->course_name, course->grade);
+    	else printf(" %s %.2f,",course->course_name, course->grade);
     }
 	return 0;
 }
@@ -261,10 +268,10 @@ int grades_print_all(struct grades *grades){
 		for(; it_course != NULL; it_course = list_next(it_course)) {
 			course = (p_course_t)list_get(it_course);
 			if(it_course==list_end(student->courses)){
-				printf(" %s %f",course->course_name, course->grade);//better print
+				printf(" %s %.2f",course->course_name, course->grade);//better print
 			}
 			else {
-			printf(" %s %f,",course->course_name, course->grade);
+			printf(" %s %.2f,",course->course_name, course->grade);
 			}
 		}
 	}
