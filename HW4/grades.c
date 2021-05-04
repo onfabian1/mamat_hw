@@ -252,6 +252,7 @@ int grades_print_student(struct grades *grades, int id){
     	}
     	else printf(" %s %.2f,",course->course_name, course->grade);
     }
+    printf("\n");
 	return 0;
 }
 int grades_print_all(struct grades *grades){
