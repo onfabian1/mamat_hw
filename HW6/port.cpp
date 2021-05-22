@@ -14,6 +14,10 @@ bool Port::set_value(String val){
 		delete[] arr;
 		return false;
 	}
+    if(!size){
+        delete[] arr;
+        return false;
+    }
 	if(MAX_SIZE != size){
 		low = arr[0].trim().to_integer();
 		high = low;
@@ -25,6 +29,7 @@ bool Port::set_value(String val){
 	delete[] arr;
 	return low && high;
 }
+
 bool match_value(String val) const{
     int temp = val.trim().to_integer();
 	return (temp >= low) && (temp <= high);
