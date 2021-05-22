@@ -3,6 +3,11 @@
 #include <cstring>
 #include "ip.h" /* for to_integer() */
 
+#define MIN_INT 0
+#define MAX_INT 255
+#define MAX_SHIFT 24
+#define BITS_IN_BYTE 8
+
 /* Default constructor */
 String::String(){
 	data = NULL;
@@ -17,25 +22,26 @@ String::String(const String &str) {
 		data = NULL;
 	} else{
     data = new char[length+1];
-    strcpy(data,str.data);
+    if(NULL != data){
+			strncpy(data, str.data, length + 1);
+		}else{
+			length = 0;
+		}
 	}
 }
 
 /* constructor */
-String::String(const char *str){
-	// check for nullptr
-	if(str == NULL){
-		length = 0;
-		data = NULL;
-		return;
+String::String(const char *str) {
+	if (str == NULL){
+			data = NULL;
+			length = 0;
+			return;
 	}
-
-	length = strlen(str); //include the \0
-	
-	// if empty string - return
-	if(0 == length){
-		data = NULL;
-	}else{
+    length = strlen(str);
+    if(length == 0){
+    	data = NULL;
+    }
+    else{
 		data = new char[length + 1];
 		
 		if(NULL != data){
@@ -53,26 +59,21 @@ String::~String(){
 }
 
 String& String::operator=(const String &rhs){
-	/* verify we are not self-asigning */
 	if(this == &rhs) {
 		return *this;
 	}
-
-	//Free old string
-	if(NULL != data) {
+	if(data != NULL) {
 		delete[] data;
 	}
 
 	length = rhs.length;
-	
-	// if empty string - return
 	if(0 == length){
 		data = NULL;
 	}else{
 		data = new char[length + 1];
 
 		if(NULL != data){
-			strncpy(data, rhs.data, length + 1);
+			strcpy(data, rhs.data);
 		}else{
 			length = 0;
 		}
@@ -104,7 +105,7 @@ String& String::operator=(const char *str){
 		data = new char[length + 1];
 		
 		if(NULL != data){
-			strncpy(data, str, length + 1);
+			strcpy(data, str);
 		}else{
 			length = 0;
 		}
@@ -114,37 +115,38 @@ String& String::operator=(const char *str){
 }
 
 bool String::equals(const String &rhs) const {
+	if((this == &rhs) || (this->data == rhs.data)) {
+		return true;
+	}
 	if(length != rhs.length){
 		return false;
 	}
 
-	if(0 != strncmp(data, rhs.data, length)){
-		return false;
+	if(0 == strcmp(data, rhs.data)){
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 bool String::equals(const char *rhs) const {
-	// Check nullptr
-	/* TODO: Check with TA what is the expected result if rhs == NULL and data == NULL */
-	if(NULL == rhs)
-	{
-		if(data == NULL) {
-			return true;
+	if(this->data == rhs) {
+		if(this->data == NULL){
+			return false;
 		}
+		return true;
+	}
+	if((rhs == NULL) || (this->data == NULL)){
 		return false;
 	}
-
 	if(length != strlen(rhs)){
 		return false;
 	}
 
-	if(0 != strncmp(data, rhs, length)){
-		return false;
+	if(0 == strcmp(data, rhs)){
+		return true;
 	}
-
-	return true;
+	return false;
 }
 
 void String::split(const char *delimiters, String **output, size_t *size) const {
@@ -193,7 +195,6 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 	}
 	*size = numSubstrings;
 
-	/* checking output for NULL here because we need to update size before exit. otherwise check_args() fails */
 	if(NULL == output){
 		return;
 	}
@@ -201,8 +202,7 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 	//allocate substrings
 	*output = new String[numSubstrings];
 
-	//TODO: check with TA if need to allocate empty string in case of 2 following delimiters "aaa,,bbb"
-	//copy each substring to output
+
 	for(unsigned int i = 0; i < length; i++){
 		for(delimiter = 0; delimiter < numDelimiters; delimiter++){
 			if(dataCopy2[i] == delimiters[delimiter]){
@@ -229,79 +229,57 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 }
  
  /* create integer from string. return 0 in case of error */
-int String::to_integer() const { 
-	int ret = 0;
-	String* substrs;
-	size_t size = 0;
+int String::to_integer() const {
+    int convert = 0;
+    String* sub_strings = NULL;
+    size_t size = 0;
 
-	//if our data is a string representing ip
-	split(".", &substrs, &size);
-
-	if(IP_SEGMENTS == size) { // if the format is XXX.XXX.XXX.XXX parse as IP
-
-		//trim the each  sub string and build full integer
-		for(unsigned int i = 0; i < size; i++){
-			int byte = substrs[i].trim().to_integer();
-			//if substring is > 255 - the address is not valid
-			if((byte > 255) || (byte < 0)){
-				delete[] substrs;
-				return 0;
-			}
-			ret |= byte << (24 - (8 * i));
-		}
-
-		delete[] substrs;
-		return ret;
-	
-	}else{ // parse as integer
-		//we cannot assume that the data is already trimmed, therefore should use: atoi((this->trim()).data)
-		//ret = atoi(data);
-		/*TODO: check with TA how to treat errors */
-		ret = atoi((this->trim()).data);
-		if(0 != ret){
-			if( NULL != substrs){
-				delete[] substrs;
-			}
-			return ret;
-		}
-	}
-
-	if( NULL != substrs){
-		delete[] substrs;
-	}
-	return 0;
+    split(".", &sub_strings, &size);
+    /* size = 4 => data represents an IP address.
+     * Ip format: ad.cd.xy.zw, thus we get 4 sub-strings. */
+    if(size == IP_SEGMENTS) {
+        /* For each sub-string:
+         * (1) Remove leading or trailing spaces.
+         * (2) Convert to integer.                  */
+        for(size_t i=0; i < size; i++) {
+            int byte = sub_strings[i].trim().to_integer();
+            if ((byte > MAX_INT) || (byte < MIN_INT)) {
+                delete[] sub_strings;
+                return 0;  
+            }
+            int location = MAX_SHIFT - (i * BITS_IN_BYTE);
+            convert |= byte << location;
+        }
+    }
+    else {    /* The number is represented by ascii value  */
+        convert = atoi(data);
+    }
+    delete[] sub_strings;
+    return convert;
 }
-
  
 String String::trim() const {
-	int start = 0;
-	int end = length - 1;
-
-	if(NULL == data){
+    int space_start = 0;
+    int space_end = length;
+    if(NULL == data){
 		return String();
 	}
-
-	//remove spaces from begining
-	while(data[start] == ' '){
-		start++;
-	}
-
-	//remove spaces from end
-	while((data[end] == ' ') && (start != end)){
-		end--;
-	}
-	end++;
-
-	//if no characters in the string - return empty string
-	if(start >= end)
-	{
-		return String();
-	}
-
-	char newData[end - start + 1];
-	strncpy(newData, &data[start], end - start);
-	newData[end - start] = '\0';
-
-
-	return String(newData);
+    for (size_t i=space_start; i<length; i++) {    /* Leading white-spaces */
+        if (data[i] == ' ') {
+            space_start += 1;
+        } else {
+            break;
+        }
+    }
+    for (int j=space_end; j>=0; j--) {    /* Trailing white-spaces */
+        if (data[j] == ' ') {
+            space_end -= 1;
+        } else {
+            break;
+        }
+    }
+    size_t new_length = space_end - space_start + 1;
+    char *temp = new char[new_length + 1];
+    strcpy(temp, &data[space_start]);
+    return String(temp);
 }
