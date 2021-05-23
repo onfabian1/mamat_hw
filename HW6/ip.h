@@ -3,6 +3,8 @@
 
 #include "field.h"
 #include "string.h"
+#define IP_NUM (4)
+#define IP_MASK (2)
 
 class Ip: public Field{
 private:
