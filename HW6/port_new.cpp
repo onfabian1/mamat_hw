@@ -30,7 +30,7 @@ bool Port::set_value(String val){
 	return low && high;
 }
 
-bool match_value(String val) const{
+bool Port::match_value(String val) const{
     int temp = val.trim().to_integer();
 	return (temp >= low) && (temp <= high);
 }

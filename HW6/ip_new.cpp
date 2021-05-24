@@ -32,13 +32,14 @@ bool Ip::set_value(String val){
 		bit = 0xFFFFFFFF;
 	}*/
 	bottom = ip - ip%(2^n);
-	top = ip | (2^n-1);
+	top = ip | ((2^n)-1);
 	/*else	bit = ((unsigned int)1 << n) - 1;
 
 	top = ip | bit;
 	bottom = ip & (~bit);
 	return true;
 }	*/
+}
 
 bool Ip::match_value(String val) const{
 	unsigned int retVal = (unsigned int)val.trim().to_integer();
