@@ -9,7 +9,7 @@ Field::Field(String pattern){
 }
 
 //distructor:
-Field::~Field{
+Field::~Field(){
 
 }
 
