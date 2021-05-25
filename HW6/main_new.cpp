@@ -1,7 +1,7 @@
 #include <cstring>
 #include <iostream>
-#include "port.h"
-#include "ip.h"
+#include "port_new.h"
+#include "ip_new.h"
 
 
 extern int check_args(int, char**);
@@ -25,9 +25,9 @@ int main(int argc, char** argv){
 		return 1;
 	}
 
-	char* const str[4] = {"dst-port", "src-port", "dst-ip", "src-ip"};
+	const char* const str[4] = {"dst-port", "src-port", "dst-ip", "src-ip"};
 	if(arr[0].trim().equals(str[0]) || arr[0].trim().equals(str[1])){
-		Field port = new Port(arr[0]);
+		Field *port = new Port(arr[0]);
 		port->set_value(arr[1]);
 		parse_input(*port);
 		delete port;
@@ -36,7 +36,7 @@ int main(int argc, char** argv){
 	}
 
 	else if(arr[0].trim().equals(str[2]) || arr[0].trim().equals(str[3])){
-		Field ip = new Ip(arr[0]);
+		Field *ip = new Ip(arr[0]);
 		ip->set_value(arr[1]);
 		parse_input(*ip);
 		delete ip;
