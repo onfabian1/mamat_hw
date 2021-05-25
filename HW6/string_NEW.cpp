@@ -1,7 +1,7 @@
 #include "string.h"
 #include <iostream>
 #include <cstring>
-#include "ip.h" /* for to_integer() */
+#include "ip.h" 
 
 #define MIN_INT 0
 #define MAX_INT 255
