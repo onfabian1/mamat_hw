@@ -9,21 +9,21 @@
 #define BITS_IN_BYTE 8
 #define MAX_POWER 24
 
-/* Default constructor */
+// Default constructor 
 String::String(){
 	data = NULL;
 	length = 0;
 }
 
-/* Copy constructor */	
+// Copy constructor 	
 String::String(const String &str) {
     length = str.length;
-    if (0 == length)
+    if (!length)
 	{
 		data = NULL;
 	} else{
     data = new char[length+1];
-    if(NULL != data){
+    if(data != NULL){
 			strncpy(data, str.data, length + 1);
 		}else{
 			length = 0;
@@ -31,7 +31,7 @@ String::String(const String &str) {
 	}
 }
 
-/* constructor */
+//constructor 
 String::String(const char *str) {
 	if (str == NULL){
 			data = NULL;
@@ -45,7 +45,7 @@ String::String(const char *str) {
     else{
 		data = new char[length + 1];
 		
-		if(NULL != data){
+		if(data != NULL){
 			strncpy(data, str, length + 1);
 		}else{
 			length = 0;
@@ -54,7 +54,7 @@ String::String(const char *str) {
 }
 
 String::~String(){
-	if(NULL != data) {
+	if(data != NULL) {
 		delete[] data;
 	}
 }
