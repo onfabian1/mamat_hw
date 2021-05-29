@@ -8,14 +8,14 @@ while read rule
 do
 	match_pkts=""
 	#rule=`echo "$rule" | sed 's/ //g' | sed '/^$/d' | grep -o '^[^#]*'`
-	rule=`echo "$rule" | tr -d ' ' | sed '/^$/d' | grep -o '^[^#]*' | sed 's/'[,]+'/,/g' | sed 's/'^[,]'//g'`   #grep -o '^[a-z]' | grep -o '$[0-9]'`
+	rule=`echo "$rule" | tr -d ' ' | sed '/^$/d' | grep -o '^[^#]*' | sed -r 's/'[,]+'/,/g' | sed -r 's/'^[,]'//g'`   #grep -o '^[a-z]' | grep -o '$[0-9]'`
 	if [[ "$rule" == "" ]]; then
 		continue
 	fi
 
 	IFS=',' read -ra arr <<< "$rule"
-			#echo "$packets" | valgrind --leak-check=full ./firewall.exe "${arr[0]}" 2>&1 
-		 #   echo "$packets" | valgrind --leak-check=full ./firewall.exe "${arr[1]}" 2>&1 
+		#	echo "$packets" | valgrind --leak-check=full ./firewall.exe "${arr[0]}" 2>&1 
+		  # echo "$packets" | valgrind --leak-check=full ./firewall.exe "${arr[1]}" 2>&1 
 		  #  echo "$packets" | valgrind --leak-check=full ./firewall.exe "${arr[2]}" 2>&1 
 		  #  echo "$packets" | valgrind --leak-check=full ./firewall.exe "${arr[3]}" 2>&1 
 	match_pkts=`echo "$packets" | ./firewall.exe "${arr[0]}" | ./firewall.exe "${arr[1]}"` 
