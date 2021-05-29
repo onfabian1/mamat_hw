@@ -63,7 +63,7 @@ String& String::operator=(const String &rhs){
 	}
 
 	length = rhs.length;
-	if(0 == length){
+	if(!length){
 		data = NULL;
 	}else{
 		data = new char[length + 1];
@@ -148,17 +148,14 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 	char dataCopy1[length + 1] = {0};
 	char dataCopy2[length + 1] = {0};
 
-	//TODO: check with TA if we have to proceed in case size == NULL
 	if(NULL == size){
 		return;
 	}
 
 	*size = 0;
 
-	//TODO: check with TA regarding expected behaviour on NULL == delimiters (should we allocate 1 substr or not?)
-	//TODO: check with TA regarding expected behaviour on NULL == data (should we allocate 1 substr of empty string or not?)
 	if(NULL == delimiters || NULL == data){ 
-		return;
+	return;
 	}
 	strcpy(dataCopy1, data);
 	strcpy(dataCopy2, data);
@@ -225,76 +222,19 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 	return;
 }
  
- /*
-void String::split(const char *delimiters, String **output, size_t *size) const {
-	int start = 0, substr = 0;
-	unsigned int delimiter = 0, numDelimiters = 0;
-	unsigned int numSubstrings = 1; //if no delimiters in our string then return the whole string - therefore at least 1 substring
-	char dataCopy[length + 1] = {0};
 
 
-	//TODO: check with TA if we have to proceed in case size == NULL
-	if(NULL == size){
-		return;
-	}
 
-	*size = 0;
-
-	//TODO: check with TA regarding expected behaviour on NULL == delimiters (should we allocate 1 substr or not?)
-	//TODO: check with TA regarding expected behaviour on NULL == data (should we allocate 1 substr of empty string or not?)
-	if(NULL == delimiters || NULL == data){ 
-		return;
-	}
-
-	//copy original string to temporary value
-	strncpy(dataCopy, data, length);
-	dataCopy[length] = '\0';
-
-
-	numDelimiters = strlen(delimiters);
-	//count number of substrings
-	for(unsigned int i = 0; i < length; i++){
-		for(delimiter = 0; delimiter < numDelimiters; delimiter++){
-			if(dataCopy[i] == delimiters[delimiter]){
-				numSubstrings++;
-			}
-		} 
-	}
-	*size = numSubstrings;
-
- checking output for NULL here because we need to update size before exit. otherwise check_args() fails */
-	/*if(NULL == output){
-		return;
-	}
-
-	//allocate substrings
-	*output = new String[numSubstrings];
-
-	//TODO: check with TA if need to allocate empty string in case of 2 following delimiters "aaa,,bbb"
-	//copy each substring to output
-	for(unsigned int i = 0; i < length; i++){
-		for(delimiter = 0; delimiter < numDelimiters; delimiter++){
-			if(dataCopy[i] == delimiters[delimiter]){
-				dataCopy[i] = '\0';
-				(*output)[substr] = String(&dataCopy[start]);
-				start = i + 1;
-				substr++;
-			}
-		} 
-	}
-
-	//set the last substring
-	(*output)[substr] = String(&dataCopy[start]);
-	return;
-}
-*/
 int String::to_integer() const {
     int convert = 0;
     String* sub_strings = NULL;
     size_t size = 0;
 
     split(".", &sub_strings, &size);
-    if(size == IP_SEGMENTS) {
+
+ 
+    if(size == IP_NUM) {
+
         for(size_t i=0; i < size; i++) {
             int place = sub_strings[i].trim().to_integer();
             if ((place > MAX_INT) || (place < MIN_INT)) {
@@ -306,7 +246,7 @@ int String::to_integer() const {
             convert += place;
         }
     }
-    else {    /* there is no delimiter */
+    else {    
         convert = atoi(data);
     }
     delete[] sub_strings;
@@ -319,14 +259,14 @@ String String::trim() const {
     if(NULL == data){
 		return String();
 	}
-    for (size_t i=space_start; i<length; i++) {    /* Leading white-spaces */
+    for (size_t i=space_start; i<length; i++) {    // Leading white-spaces 
         if (data[i] == ' ') {
             space_start += 1;
         } else {
             break;
         }
     }
-    for (int j=space_end; j>=0; j--) {    /* Trailing white-spaces */
+    for (int j=space_end; j>=0; j--) {    // Trailing white-spaces 
         if (data[j] == ' ') {
             space_end -= 1;
         } else {
@@ -334,7 +274,8 @@ String String::trim() const {
         }
     }
     size_t new_length = space_end - space_start + 1;
-    char *temp = new char[new_length + 1];
+    char temp[new_length + 1];
     strcpy(temp, &data[space_start]);
+    temp[new_length] = '\0';
     return String(temp);
 }

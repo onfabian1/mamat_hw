@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ip_new.h"
+#include "ip.h"
 #include <cstring>
 
 Ip::Ip(String pattern): Field(pattern){
@@ -27,9 +27,13 @@ bool Ip::set_value(String val){
 	if(n<0 || n>32){
 		return false;
 	}
-	
-	bottom = ip - ip%(2^n);
-	top = ip | ((2^n)-1);
+	unsigned int bit;
+	if(n==32){
+		bit = 0xFFFFFFFF;
+	}
+	else bit = ((unsigned int)1 << n) - 1;
+	bottom = ip & (~bit); 
+	top = ip | bit;
 	return true;
 }
 
