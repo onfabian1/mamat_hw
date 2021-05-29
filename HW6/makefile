@@ -4,8 +4,8 @@ CCLINK = $(CXX)
 RM = rm -fr *.o firewall.exe firewall
 NEW_LIB = firewall
 PROG = firewall.exe
-CPP_FILES = field_new.cpp ip_new.cpp port_new.cpp string_NEW.cpp
-MAIN = main_new.cpp
+CPP_FILES = field.cpp ip.cpp port.cpp string.cpp
+MAIN = main.cpp
 
 
 all:$(PROG)
