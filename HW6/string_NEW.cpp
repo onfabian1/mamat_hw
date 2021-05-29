@@ -1,7 +1,7 @@
 #include "string.h"
 #include <iostream>
 #include <cstring>
-#include "ip.h" 
+#include "ip_new.h" 
 
 #define MIN_INT 0
 #define MAX_INT 255
@@ -238,7 +238,7 @@ int String::to_integer() const {
     split(".", &sub_strings, &size);
     /* size = 4 => data represents an IP address.
      * Ip format: ad.cd.xy.zw, thus we get 4 sub-strings. */
-    if(size == IP_SEGMENTS) {
+    if(size == IP_NUM) {
         for(size_t i=0; i < size; i++) {
             int place = sub_strings[i].trim().to_integer();
             if ((place > MAX_INT) || (place < MIN_INT)) {

@@ -27,21 +27,13 @@ bool Ip::set_value(String val){
 	if(n<0 || n>32){
 		return false;
 	}
-	/*unsigned int bit;
-	if(mask==32){
-		bit = 0xFFFFFFFF;
-	}*/
+	
 	bottom = ip - ip%(2^n);
 	top = ip | ((2^n)-1);
-	/*else	bit = ((unsigned int)1 << n) - 1;
-
-	top = ip | bit;
-	bottom = ip & (~bit);
 	return true;
-}	*/
 }
 
 bool Ip::match_value(String val) const{
-	unsigned int retVal = (unsigned int)val.trim().to_integer();
-	return ((bottom <= retVal) && (retVal <= top));
+	const int ret = (unsigned int)val.trim().to_integer();
+	return ((bottom <= ret) && (ret <= top));
 }

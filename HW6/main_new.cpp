@@ -2,11 +2,12 @@
 #include <iostream>
 #include "port_new.h"
 #include "ip_new.h"
+#include "input.h"
 
-
+/*
 extern int check_args(int, char**);
 extern void parse_input(Field&);
-
+I did input insted of extern*/
 
 int main(int argc, char** argv){
 
