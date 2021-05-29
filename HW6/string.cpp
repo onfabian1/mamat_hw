@@ -9,29 +9,24 @@
 #define BITS_IN_BYTE 8
 #define MAX_POWER 24
 
-// Default constructor 
 String::String(){
 	data = NULL;
 	length = 0;
 }
-
-// Copy constructor 	
 String::String(const String &str) {
     length = str.length;
-    if (!length)
+    if (0 == length)
 	{
 		data = NULL;
 	} else{
     data = new char[length+1];
-    if(data != NULL){
+    if(NULL != data){
 			strncpy(data, str.data, length + 1);
 		}else{
 			length = 0;
 		}
 	}
 }
-
-//constructor 
 String::String(const char *str) {
 	if (str == NULL){
 			data = NULL;
@@ -45,7 +40,7 @@ String::String(const char *str) {
     else{
 		data = new char[length + 1];
 		
-		if(data != NULL){
+		if(NULL != data){
 			strncpy(data, str, length + 1);
 		}else{
 			length = 0;
@@ -54,7 +49,7 @@ String::String(const char *str) {
 }
 
 String::~String(){
-	if(data != NULL) {
+	if(NULL != data) {
 		delete[] data;
 	}
 }
@@ -88,8 +83,6 @@ String& String::operator=(const char *str){
 	if(NULL != data) {
 		delete[] data;
 	}
-
-	//check for NULL parameter
 	if(NULL == str)
 	{
 		data = NULL;
@@ -98,8 +91,6 @@ String& String::operator=(const char *str){
 	}
 
 	length = strlen(str);
-
-	// if empty string - return
 	if(0 == length){
 		data = NULL;
 	}else{
@@ -166,16 +157,18 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 	if(NULL == delimiters || NULL == data){ 
 	return;
 	}
-
-	//copy original string to temporary value
 	strcpy(dataCopy1, data);
 	strcpy(dataCopy2, data);
 	delimiters_num = strlen(delimiters);
-	//count number of substrings
+	
 	for(unsigned int i = 0; i < length; i++){
 		for(delimiter = 0; delimiter < delimiters_num; delimiter++){
 			if(dataCopy1[i] == delimiters[delimiter]) {
-				if((dataCopy1[i-1] == '\0') || (i == 0)){
+				if(i == 0){
+					dataCopy1[i] = '\0';
+					break;
+				}
+				else if(dataCopy1[i-1] == '\0'){
 					dataCopy1[i] = '\0';
 					break;
 				}
@@ -192,28 +185,31 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 		} 
 	}
 	*size = num_subs_trings;
-
 	if(NULL == output){
 		return;
 	}
 
-	//allocate substrings
 	*output = new String[num_subs_trings];
 
 
 	for(unsigned int i = 0; i < length; i++){
 		for(delimiter = 0; delimiter < delimiters_num; delimiter++){
 			if(dataCopy2[i] == delimiters[delimiter]){
-				if((dataCopy2[i-1] != '\0') || (i != 0)){
+				if(i == 0){
 					dataCopy2[i] = '\0';
-					(*output)[substr] = String(&dataCopy2[start]);
 					start = i + 1;
-					substr++;
+					break; //we found one delimiter
+				}
+				else if(dataCopy2[i-1] == '\0'){
+					dataCopy2[i] = '\0';
+					start = i + 1;
 					break; //we found one delimiter
 				}
 				else{
 				 	dataCopy2[i] = '\0';
+				 	(*output)[substr] = String(&dataCopy2[start]);
 				 	start = i + 1;
+				 	substr++;
 				 	break;
 				}
 
@@ -226,15 +222,21 @@ void String::split(const char *delimiters, String **output, size_t *size) const 
 	return;
 }
  
- // create integer from string. return 0 in case of error 
+
+
+
 int String::to_integer() const {
     int convert = 0;
     String* sub_strings = NULL;
     size_t size = 0;
 
     split(".", &sub_strings, &size);
+
  
     if(size == IP_NUM) {
+
+    if(size == IP_SEGMENTS) {
+
         for(size_t i=0; i < size; i++) {
             int place = sub_strings[i].trim().to_integer();
             if ((place > MAX_INT) || (place < MIN_INT)) {

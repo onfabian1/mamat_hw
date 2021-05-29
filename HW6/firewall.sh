@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packets='cat'
+packets=`cat`
 
 firewall_pkts=""
 
