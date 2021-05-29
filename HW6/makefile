@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -g -std=c++11 -L. -Wextra
 CCLINK = $(CXX)
-RM = rm -fr *.o firewall.exe firewall
+RM = rm -fr *.o firewall.exe libfirewall.so
 NEW_LIB = firewall
 PROG = firewall.exe
 CPP_FILES = field.cpp ip.cpp port.cpp string.cpp

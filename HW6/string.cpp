@@ -235,8 +235,6 @@ int String::to_integer() const {
  
     if(size == IP_NUM) {
 
-    if(size == IP_SEGMENTS) {
-
         for(size_t i=0; i < size; i++) {
             int place = sub_strings[i].trim().to_integer();
             if ((place > MAX_INT) || (place < MIN_INT)) {
