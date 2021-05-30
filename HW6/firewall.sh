@@ -18,7 +18,7 @@ do
 	do
 		match_pkts=`echo "$match_pkts" | ./firewall.exe "$filter"`
 	done
-	firewall_pkts+=`echo -e "${match_pkts}" | sed '/^[[:space:]]*$/d' | sort -u ` #| uniq -c  | grep -E "^ *${#arr[@]} " | sed -e "s/^ *${#rarr[@]} //"`
+	firewall_pkts+=`echo -e "${match_pkts}" | sed '/^[[:space:]]*$/d' | sort -u ` 
 	firewall_pkts+="\n"
 
 done <"$1"
