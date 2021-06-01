@@ -7,7 +7,7 @@ firewall_pkts=""
 while read rule
 do
 	match_pkts=`echo "$packets"`
-	#rule=`echo "$rule" | sed 's/ //g' | sed '/^$/d' | grep -o '^[^#]*'`
+
 	rule=`echo "$rule" | tr -d ' ' | sed '/^$/d' | grep -o '^[^#]*' | sed -r 's/'[,]+'/,/g' | sed -r 's/'^[,]'//g'`  
 	if [[ "$rule" == "" ]]; then
 		continue
