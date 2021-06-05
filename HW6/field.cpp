@@ -14,7 +14,7 @@ Field::~Field(){
 }
 
 bool Field::match(String packet){
-	size_t size = 0;
+	size_t size;
 	bool val = false;
 	String *arr;
 
@@ -23,9 +23,11 @@ bool Field::match(String packet){
 		//delete[] arr;
 		return val;
 	}
-	
+	//src-ip=50-52
 	for(int i=0; i<(int)size; i+=2){
+	//parser
 		if(pattern.equals(arr[i].trim())){
+		//mask
 			val = match_value(arr[i+1].trim());
 			break; // matched rule
 		}

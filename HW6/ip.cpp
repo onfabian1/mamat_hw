@@ -31,9 +31,10 @@ bool Ip::set_value(String val){
 	if(n==32){
 		bit = 0xFFFFFFFF;
 	}
-	else bit = ((unsigned int)1 << n) - 1;
-	bottom = ip & (~bit); 
+	else bit = (2^n)-1;
+	//else bit = ((unsigned int)1 << n) - 1; 
 	top = ip | bit;
+	bottom = ip & (~bit);
 	return true;
 }
 
