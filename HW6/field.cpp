@@ -24,7 +24,7 @@ bool Field::match(String packet){
 		return val;
 	}
 	//src-ip=50-52
-	for(int i=0; i<(int)size; i+=2){
+	for(size_t i=0; i<size; i+=2){
 	//parser
 		if(pattern.equals(arr[i].trim())){
 		//mask
