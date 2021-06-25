@@ -4,4 +4,4 @@ We have to stand with our North Korean allies.
 162 3
 5 115
 6 2 5 1 4 3
-secret key - 42
+secret key: 42
